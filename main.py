@@ -5,6 +5,7 @@ Created on Tue Feb 13 18:35:24 2018
 @author: mohit
 """
 from itertools import combinations
+import copy
 
 class k_itemset:
     items = []
@@ -197,20 +198,23 @@ def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
     return c
 
 def prune_must_have(F, must_have_items):
-    print(F)
-    print("**************")
-    print(must_have_items)
-    for must_have_item in must_have_items:
-        for itemsets in F:
-            pass
-
-
-
-    return F
+    print("inside prune_must_have")
+    temp_F = copy.deepcopy(F)
+    for i, itemsets in enumerate(F):
+        for j, itemset in enumerate(itemsets):
+            print("Itemsets is {}".format(itemsets))
+            temp_count = 0
+            for must_have_item in must_have_items:
+                if must_have_item not in itemset:
+                    temp_count += 1
+            if temp_count == len(must_have_items):
+                temp_F[i].remove(itemset)
+                print(temp_F)
+    return temp_F
 
 def prune_cannot_be_together(F, cannot_be_together):
     print("inside cannot_be_together")
-    temp_F = list(F)
+    temp_F = copy.deepcopy(F)
     for i, itemsets in enumerate(F):
         if i==0:
             continue
