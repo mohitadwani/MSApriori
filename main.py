@@ -194,16 +194,43 @@ def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
     return c
 
 def prune_must_have(F, must_have_items):
-    print(F)
-    print("**************")
-    print(must_have_items)
-    for must_have_item in must_have_items:
-        for itemsets in F:
-            pass
-            
-        
-        
-    return F
+    temp_F = list(F)
+    mhi_count = 0
+#    print("temp_F:")
+#    print(temp_F)
+#    print("**************")
+#    print(must_have_items)
+    
+    for i, itemsets in enumerate(F):
+#            print(must_have_item)
+#            print(itemsets)
+        print ("Outer Loop: %d" %i)
+        print("MHI LEN: %d" %len(must_have_items))
+        if len(itemsets) > 0:
+            for item in itemsets:
+                print(F)
+                for must_have_item in must_have_items:
+                    print("Item is: ")
+                    print(item, must_have_item)
+                    if must_have_item not in item:
+                        mhi_count += 1
+                try: 
+                    if mhi_count == len(must_have_items):
+                        temp_F[i].remove(item)
+                        print("~~~~~~~~")
+                        print(temp_F)
+                except:
+                    print("Already removed")
+                mhi_count = 0   
+#            if must_have_item not in itemsets:
+#                print("Removing...")
+##                print (F.remove(itemsets))
+#                #F = F.remove(itemsets)
+    print("&&&")
+    print(temp_F)
+    print("\n")
+    
+    return temp_F
 
 def prune_cannot_be_together(F, cannot_be_together):
     print("inside cannot_be_together")
