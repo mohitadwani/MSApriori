@@ -11,5 +11,5 @@ MIS(100) = 0.10
 MIS(120) = 0.20
 MIS(140) = 0.15
 SDC = 0.1
-cannot_be_together: {20, 40}, {70, 80}
+cannot_be_together: {100, 140}, {140, 120}
 must-have: 20 or 40 or 50

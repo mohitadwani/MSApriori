@@ -75,9 +75,11 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
     print("Sorted Itemset is {}".format(min_support))
     # Step 2 is to calculate L using init_pass
     l = init_pass(min_support, transactions_list)
+    for one_itemset in list(l.items()):
+        count_dict[(one_itemset[0],)] = one_itemset[1]
     f1 = []
-    for item, act_sup in l.items():
-        if act_sup > min_support[item]:
+    for item, lcount in l.items():
+        if lcount/n > min_support[item]:
             f1.append((item,))
     print("F1 = {}".format(f1))
     k = 2
@@ -132,6 +134,7 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
         F = prune_must_have(F, must_have_items)
     if cannot_be_together:
         F = prune_cannot_be_together(F, cannot_be_together)
+    output_pattern(F, count_dict, tail_count_dict)
 def init_pass(min_support, transactions_list):
     # to add first item in L, that item will be the first item which satisfies it's min_support
     l = dict()
@@ -147,7 +150,7 @@ def init_pass(min_support, transactions_list):
                 count +=1
         act_sup = count/n
         if act_sup >= current_mis:
-            l[item] = act_sup
+            l[item] = count
             if len(l) == 1:
                 current_mis = mis
     return l
@@ -200,16 +203,37 @@ def prune_must_have(F, must_have_items):
     for must_have_item in must_have_items:
         for itemsets in F:
             pass
-            
-        
-        
+
+
+
     return F
 
 def prune_cannot_be_together(F, cannot_be_together):
     print("inside cannot_be_together")
+    temp_F = list(F)
     for i, itemsets in enumerate(F):
-        pass
-    print(F)
-    return F
+        if i==0:
+            continue
+        for j, itemset in enumerate(itemsets):
+            for cannot_item in cannot_be_together:
+                print(F, cannot_item)
+                temp_count = 0
+                for one_cannot in cannot_item:
+                    if one_cannot in itemset:
+                        temp_count += 1
+                if temp_count == len(cannot_item):
+                    try:
+                        temp_F[i].remove(itemset)
+                    except:
+                        print("Itemset is already removed")
 
+    print(temp_F)
+    return temp_F
+
+def output_pattern(F, count_dict, tail_count_dict):
+    for i, itemsets in enumerate(F):
+        if itemsets:
+            print("Frequent {}-itemsets".format(i+1))
+            for itemset in itemsets:
+                print("\t {} : {{{}}}".format(count_dict[itemset], itemset))
 main()
