@@ -194,6 +194,13 @@ def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
 
 def prune_must_have(F, must_have_items):
     print(F)
+    print("**************")
+    print(must_have_items)
+    for must_have_item in must_have_items:
+        for itemsets in F:
+            
+        
+        
     return F
 
 def prune_cannot_be_together(F, cannot_be_together):
