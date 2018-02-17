@@ -2,7 +2,8 @@
 """
 Created on Tue Feb 13 18:35:24 2018
 
-@author: mohit
+@authors: Mohit Adwani 
+         Shubadra Govindan 
 """
 from itertools import combinations
 import copy
@@ -136,6 +137,7 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
     if cannot_be_together:
         F = prune_cannot_be_together(F, cannot_be_together)
     output_pattern(F, count_dict, tail_count_dict)
+    
 def init_pass(min_support, transactions_list):
     # to add first item in L, that item will be the first item which satisfies it's min_support
     l = dict()
