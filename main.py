@@ -75,19 +75,20 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
     print("Sorted Itemset is {}".format(min_support))
     # Step 2 is to calculate L using init_pass
     l = init_pass(min_support, transactions_list)
-    f1 = {}
+    f1 = []
     for item, act_sup in l.items():
         if act_sup > min_support[item]:
-            f1[item] = act_sup
+            f1.append((item,))
     print("F1 = {}".format(f1))
     k = 2
+    F.append(f1)
     while True:
         if k == 2:
             c2 = level2_can_gen(l, SDC, min_support, transactions_list)
             C.append(c2)
             print("C2 = {}".format(c2))
         else:
-            ck = MSCandidate_can_gen(F[k-3], l, SDC, min_support, transactions_list)
+            ck = MSCandidate_can_gen(F[k-2], l, SDC, min_support, transactions_list)
             if len(ck) == 0:
                 break
             C.append(ck)
@@ -205,6 +206,8 @@ def prune_must_have(F, must_have_items):
 
 def prune_cannot_be_together(F, cannot_be_together):
     print("inside cannot_be_together")
+    for i, itemsets in enumerate(F):
+        pass
     print(F)
     return F
 
