@@ -199,6 +199,7 @@ def prune_must_have(F, must_have_items):
     print(must_have_items)
     for must_have_item in must_have_items:
         for itemsets in F:
+            pass
             
         
         
