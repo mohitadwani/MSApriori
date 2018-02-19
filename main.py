@@ -27,7 +27,7 @@ def main():
 def read_input_file():
     transactions_list = []
     # file = open("input-data.txt", "r")
-    file = open("testData\data1.txt", "r")
+    file = open("testData\data4.txt", "r")
     for line in file:
         set_string = line.strip().replace('{', '').replace('}', '')
         set_string = set_string.split(',')
@@ -42,7 +42,7 @@ def read_param_file():
     cannot_be_together = []
 
     # file = open("parameter-file.txt", "r")
-    file = open("testData\para1-1.txt", "r")
+    file = open("testData\para4-1.txt", "r")
     for line in file:
         if 'must' in line:
             if 'or' in line:
@@ -181,7 +181,8 @@ def level2_can_gen(l, SDC, min_support, transactions_list):
     #         print("sdfsdf")
 
 def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
-    print("inside mscan gen")
+    n = len(transactions_list)
+    print("******************inside mscan gen********************")
     c = []
     # f_something = list(f)
     # f_something.remove((100,120))
@@ -190,7 +191,7 @@ def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
         temp_f = []
         # print(i, f1)
         for f2 in f[i+1:]:
-            if f1[:-1] == f2[:-1] and min_support[f1[-1]] <= min_support[f2[-1]] and abs(l[f1[-1]] - l[f2[-1]]) <= SDC:
+            if f1[:-1] == f2[:-1] and min_support[f1[-1]] <= min_support[f2[-1]] and abs(l[f1[-1]]/n - l[f2[-1]]/n) <= SDC:
                 temp_f = f1
                 temp_f = temp_f + (f2[-1],)
                 c.append(temp_f)
@@ -201,7 +202,8 @@ def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
                             print("Not In F : {}".format(subset))
                             c.remove(temp_f)
                             break
-    print("mscan gen ends")
+    print(c)
+    print("**************** mscan gen ends****************")
     return c
 
 def prune_must_have(F, must_have_items):
