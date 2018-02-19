@@ -26,8 +26,8 @@ def main():
 
 def read_input_file():
     transactions_list = []
-    # file = open("input-data.txt", "r")
-    file = open("testData\data4.txt", "r")
+    file = open("input-data.txt", "r")
+    # file = open("testData\data2.txt", "r")
     for line in file:
         set_string = line.strip().replace('{', '').replace('}', '')
         set_string = set_string.split(',')
@@ -41,8 +41,8 @@ def read_param_file():
     min_support = {}
     cannot_be_together = []
 
-    # file = open("parameter-file.txt", "r")
-    file = open("testData\para4-1.txt", "r")
+    file = open("parameter-file.txt", "r")
+    # file = open("testData\para2-2.txt", "r")
     for line in file:
         if 'must' in line:
             if 'or' in line:
@@ -76,30 +76,30 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
     count_dict = {}
     tail_count_dict = {}
     min_support = dict(sorted(min_support.items(), key=lambda x:x[1]))
-    print("Sorted Itemset is {}".format(min_support))
+    # print("Sorted Itemset is {}".format(min_support))
     # Step 2 is to calculate L using init_pass
     l = init_pass(min_support, transactions_list)
-    print("L = {}".format(l))
+    # print("L = {}".format(l))
     for one_itemset in list(l.items()):
         count_dict[(one_itemset[0],)] = one_itemset[1]
     f1 = []
     for item, lcount in l.items():
         if lcount/n >= min_support[item]:
             f1.append((item,))
-    print("F1 = {}".format(f1))
+    # print("F1 = {}".format(f1))
     k = 2
     F.append(f1)
     while True:
         if k == 2:
             c2 = level2_can_gen(l, SDC, min_support, transactions_list)
             C.append(c2)
-            print("C2 = {}".format(c2))
+            # print("C2 = {}".format(c2))
         else:
             ck = MSCandidate_can_gen(F[k-2], l, SDC, min_support, transactions_list)
             if len(ck) == 0:
                 break
             C.append(ck)
-        print("Ck = {}".format(C[k-2]))
+        # print("Ck = {}".format(C[k-2]))
         for candidate in C[k-2]:
             count_dict[candidate] = 0
             tail_count_dict[candidate] = 0
@@ -124,17 +124,17 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
         for candidate in C[k-2]:
             if count_dict[candidate]/n >= min_support[candidate[0]]:
                 fk.append(candidate)
-        print("Count Dict = {}".format(count_dict))
-        print("Fk = {}".format(fk))
+        # print("Count Dict = {}".format(count_dict))
+        # print("Fk = {}".format(fk))
         if len(fk) == 0:
             break
         F.append(fk)
         k += 1
 
-    print("**************************MSApriori OVER**********************")
-    print("C = {}".format(C))
-    print("F = {}".format(F))
-    print("Count = {}".format(count_dict))
+    # print("**************************MSApriori OVER**********************")
+    # print("C = {}".format(C))
+    # print("F = {}".format(F))
+    # print("Count = {}".format(count_dict))
     if must_have_items:
         F = prune_must_have(F, must_have_items)
     if cannot_be_together:
@@ -182,7 +182,7 @@ def level2_can_gen(l, SDC, min_support, transactions_list):
 
 def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
     n = len(transactions_list)
-    print("******************inside mscan gen********************")
+    # print("******************inside mscan gen********************")
     c = []
     # f_something = list(f)
     # f_something.remove((100,120))
@@ -197,39 +197,39 @@ def MSCandidate_can_gen(f, l, SDC, min_support, transactions_list):
                 c.append(temp_f)
                 for subset in list(combinations(temp_f, len(temp_f)-1)):
                     if temp_f[0] in subset or (min_support[temp_f[1]] == min_support[temp_f[0]]):
-                        print(subset)
+                        # print(subset)
                         if subset not in f: # this doesnt work
-                            print("Not In F : {}".format(subset))
+                            # print("Not In F : {}".format(subset))
                             c.remove(temp_f)
                             break
-    print(c)
-    print("**************** mscan gen ends****************")
+    # print(c)
+    # print("**************** mscan gen ends****************")
     return c
 
 def prune_must_have(F, must_have_items):
-    print("inside prune_must_have")
+    # print("inside prune_must_have")
     temp_F = copy.deepcopy(F)
     for i, itemsets in enumerate(F):
         for j, itemset in enumerate(itemsets):
-            print("Itemsets is {}".format(itemsets))
+            # print("Itemsets is {}".format(itemsets))
             temp_count = 0
             for must_have_item in must_have_items:
                 if must_have_item not in itemset:
                     temp_count += 1
             if temp_count == len(must_have_items):
                 temp_F[i].remove(itemset)
-                print(temp_F)
+                # print(temp_F)
     return temp_F
 
 def prune_cannot_be_together(F, cannot_be_together):
-    print("inside cannot_be_together")
+    # print("inside cannot_be_together")
     temp_F = copy.deepcopy(F)
     for i, itemsets in enumerate(F):
         if i==0:
             continue
         for j, itemset in enumerate(itemsets):
             for cannot_item in cannot_be_together:
-                print(F, cannot_item)
+                # print(F, cannot_item)
                 temp_count = 0
                 for one_cannot in cannot_item:
                     if one_cannot in itemset:
@@ -238,15 +238,21 @@ def prune_cannot_be_together(F, cannot_be_together):
                     try:
                         temp_F[i].remove(itemset)
                     except:
-                        print("Itemset is already removed")
+                        pass
+                        # print("Itemset is already removed")
 
-    print(temp_F)
+    # print(temp_F)
     return temp_F
 
 def output_pattern(F, count_dict, tail_count_dict):
+    # print(F, tail_count_dict)
     for i, itemsets in enumerate(F):
-        if itemsets:
-            print("Frequent {}-itemsets".format(i+1))
+        if i == 0 or itemsets:
+            print("Frequent {}-itemsets\n".format(i+1))
             for itemset in itemsets:
-                print("\t {} : {{{}}}".format(count_dict[itemset], itemset))
+                print("\t {} : {{{}}}".format(count_dict[itemset], str(itemset).replace('(','').replace(',)','').replace(')','') ))
+                if len(itemset) > 1 :
+                    print("Tailcount = {}".format(tail_count_dict[itemset]))
+            print("\n\tTotal number of frequent {}-itemsets = {}\n\n".format(i+1, len(itemsets)))
+
 main()
