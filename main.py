@@ -2,8 +2,8 @@
 """
 Created on Tue Feb 13 18:35:24 2018
 
-@authors: Mohit Adwani 
-         Shubadra Govindan 
+@authors: Mohit Adwani
+         Shubadra Govindan
 """
 from itertools import combinations
 import copy
@@ -16,17 +16,18 @@ class k_itemset:
 def main():
     transactions_list = read_input_file()
     min_support, SDC, must_have_items, cannot_be_together = read_param_file()
-    print("Transaction List {}\n".format(transactions_list))
-    print("Must Have Items: {}\n".format(must_have_items))
-    print("SDC = {}\n".format(SDC))
-    print("Min Support : {}\n".format(min_support))
-    print("Cannot be Together: {}\n".format(cannot_be_together))
+    # print("Transaction List {}\n".format(transactions_list))
+    # print("Must Have Items: {}\n".format(must_have_items))
+    # print("SDC = {}\n".format(SDC))
+    # print("Min Support : {}\n".format(min_support))
+    # print("Cannot be Together: {}\n".format(cannot_be_together))
     ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_together)
 
 
 def read_input_file():
     transactions_list = []
-    file = open("input-data.txt", "r")
+    # file = open("input-data.txt", "r")
+    file = open("testData\data1.txt", "r")
     for line in file:
         set_string = line.strip().replace('{', '').replace('}', '')
         set_string = set_string.split(',')
@@ -40,7 +41,8 @@ def read_param_file():
     min_support = {}
     cannot_be_together = []
 
-    file = open("parameter-file.txt", "r")
+    # file = open("parameter-file.txt", "r")
+    file = open("testData\para1-1.txt", "r")
     for line in file:
         if 'must' in line:
             if 'or' in line:
@@ -77,11 +79,12 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
     print("Sorted Itemset is {}".format(min_support))
     # Step 2 is to calculate L using init_pass
     l = init_pass(min_support, transactions_list)
+    print("L = {}".format(l))
     for one_itemset in list(l.items()):
         count_dict[(one_itemset[0],)] = one_itemset[1]
     f1 = []
     for item, lcount in l.items():
-        if lcount/n > min_support[item]:
+        if lcount/n >= min_support[item]:
             f1.append((item,))
     print("F1 = {}".format(f1))
     k = 2
@@ -137,7 +140,7 @@ def ms_apriori(transactions_list, min_support, SDC, must_have_items, cannot_be_t
     if cannot_be_together:
         F = prune_cannot_be_together(F, cannot_be_together)
     output_pattern(F, count_dict, tail_count_dict)
-    
+
 def init_pass(min_support, transactions_list):
     # to add first item in L, that item will be the first item which satisfies it's min_support
     l = dict()
@@ -159,13 +162,15 @@ def init_pass(min_support, transactions_list):
     return l
 
 def level2_can_gen(l, SDC, min_support, transactions_list):
+    n = len(transactions_list)
     L = list(l.items())
+    # print("L list= {}".format(L))
     c2 = []
     for i, l in enumerate(L):
-        if l[1] >= min_support[l[0]]:
+        if l[1]/n >= min_support[l[0]]:
             for j, h in enumerate(L[i+1:]):
                 # print(l , h)
-                if h[1] >= min_support[l[0]] and abs(l[1] - h[1]) <= SDC:
+                if h[1]/n >= min_support[l[0]] and abs(l[1]/n - h[1]/n) <= SDC:
                     c2.append((l[0], h[0]))
     return c2
 
