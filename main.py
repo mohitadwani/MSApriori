@@ -27,11 +27,7 @@ def main():
 def read_input_file():
     transactions_list = []
     file = open("input-data.txt", "r")
-<<<<<<< HEAD
-    #file = open("testData\data2.txt", "r")
-=======
     # file = open("testData\data2.txt", "r")
->>>>>>> 65d597751236ca396944fc8d621965d0376c4a6d
     for line in file:
         set_string = line.strip().replace('{', '').replace('}', '')
         set_string = set_string.split(',')
@@ -46,11 +42,7 @@ def read_param_file():
     cannot_be_together = []
 
     file = open("parameter-file.txt", "r")
-<<<<<<< HEAD
-    #file = open("testData\para2-2.txt", "r")
-=======
     # file = open("testData\para2-2.txt", "r")
->>>>>>> 65d597751236ca396944fc8d621965d0376c4a6d
     for line in file:
         if 'must' in line:
             if 'or' in line:
@@ -255,11 +247,6 @@ def prune_cannot_be_together(F, cannot_be_together):
 def output_pattern(F, count_dict, tail_count_dict):
     # print(F, tail_count_dict)
     for i, itemsets in enumerate(F):
-<<<<<<< HEAD
-        if itemsets:
-            print("Frequent {}-itemsets".format(i+1))
-                print("\t {} : {{{}}}".format(count_dict[itemset], itemset))
-=======
         if i == 0 or itemsets:
             print("Frequent {}-itemsets\n".format(i+1))
             for itemset in itemsets:
@@ -268,5 +255,4 @@ def output_pattern(F, count_dict, tail_count_dict):
                     print("Tailcount = {}".format(tail_count_dict[itemset]))
             print("\n\tTotal number of frequent {}-itemsets = {}\n\n".format(i+1, len(itemsets)))
 
->>>>>>> 65d597751236ca396944fc8d621965d0376c4a6d
 main()
