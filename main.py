@@ -26,8 +26,8 @@ def main():
 
 def read_input_file():
     transactions_list = []
-    # file = open("input-data.txt", "r")
-    file = open("testData\data1.txt", "r")
+    file = open("input-data.txt", "r")
+    #file = open("testData\data2.txt", "r")
     for line in file:
         set_string = line.strip().replace('{', '').replace('}', '')
         set_string = set_string.split(',')
@@ -41,8 +41,8 @@ def read_param_file():
     min_support = {}
     cannot_be_together = []
 
-    # file = open("parameter-file.txt", "r")
-    file = open("testData\para1-1.txt", "r")
+    file = open("parameter-file.txt", "r")
+    #file = open("testData\para2-2.txt", "r")
     for line in file:
         if 'must' in line:
             if 'or' in line:
@@ -245,6 +245,5 @@ def output_pattern(F, count_dict, tail_count_dict):
     for i, itemsets in enumerate(F):
         if itemsets:
             print("Frequent {}-itemsets".format(i+1))
-            for itemset in itemsets:
                 print("\t {} : {{{}}}".format(count_dict[itemset], itemset))
 main()
